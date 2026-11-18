@@ -1,0 +1,46 @@
+# ---- Unity generated (rebuilt on open; never commit) ----
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/.utmp/
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+crashlytics-build.properties
+
+# IDE / OS
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.unityproj
+*.tmp
+.DS_Store
+Thumbs.db
+
+# ---- Builds and signing secrets (NEVER commit) ----
+/[Kk]eystore/
+*.keystore
+*.jks
+*keystore-credentials*.properties
+*.apk
+*.aab
+*.obb
+
+# ---- Local tooling ----
+.mcp.json
+.claude/
+
+# Meta XR Operator test layer (dev tool added by metavr CLI, not part of the game)
+/Assets/XR/APILayers~/

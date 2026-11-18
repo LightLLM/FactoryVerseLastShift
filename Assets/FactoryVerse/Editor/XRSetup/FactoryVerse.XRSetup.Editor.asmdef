@@ -1,0 +1,27 @@
+{
+    "name": "FactoryVerse.XRSetup.Editor",
+    "rootNamespace": "FactoryVerse",
+    "references": [
+        "Unity.XR.Management",
+        "Unity.XR.Management.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "FV_XR_MANAGEMENT"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.xr.management",
+            "expression": "4.0.0",
+            "define": "FV_XR_MANAGEMENT"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,19 @@
+using UnityEngine;
+namespace FactoryVerse {
+public class MissionHUD:MonoBehaviour {
+ public MissionDirector Mission;public PlayerRig Rig;GUIStyle small,big,body;Texture2D white;
+ void Init(){if(white)return;white=Texture2D.whiteTexture;small=new GUIStyle(GUI.skin.label){fontSize=15,normal={textColor=new Color(.65f,.84f,.88f)}};big=new GUIStyle(GUI.skin.label){fontSize=42,fontStyle=FontStyle.Bold,normal={textColor=Color.white}};body=new GUIStyle(small){fontSize=20,wordWrap=true};}
+ void Box(Rect r,Color c){GUI.color=c;GUI.DrawTexture(r,white);GUI.color=Color.white;}
+ void Text(float x,float y,float w,float h,string s,GUIStyle style){GUI.Label(new Rect(x,y,w,h),s,style);}
+ void OnGUI(){Init();float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);GUI.matrix=Matrix4x4.TRS(Vector3.zero,Quaternion.identity,Vector3.one*scale);float w=Screen.width/scale,h=Screen.height/scale;
+ if(!Mission.Started){Box(new Rect(0,0,w,h),new Color(.015f,.035f,.065f,.94f));Text(70,65,1100,30,"FACTORYVERSE     /     ORBITAL SURVIVAL EXPERIENCE",small);Text(66,108,1100,70,"LAST SHIFT",big);Text(70,198,950,100,"One operator. One unfinished robot. Twelve minutes before the station falls out of orbit.",body);Text(70,306,1050,145,"01  Assemble ATLAS with colour-matched components\n02  Diagnose and repair the orbital power relay\n03  Fly through zero gravity and secure loose cargo\n04  Reach the escape pod before oxygen runs out",body);Text(70,484,1100,70,"WASD move  •  Mouse look  •  E grab / fit / drop  •  Hold LMB operate\nZero-G: Space rise / Ctrl descend / X brake  •  F2 XR simulator  •  Esc pause",small);if(GUI.Button(new Rect(70,600,270,54),"BEGIN LAST SHIFT"))Mission.Begin();if(GUI.Button(new Rect(365,600,270,54),"BEGIN IN XR SIMULATOR")){Rig.Simulator=true;Mission.Begin();}return;}
+ Box(new Rect(24,22,w-48,91),new Color(.015f,.035f,.065f,.9f));Box(new Rect(24,22,5,91),Color.cyan);Text(44,31,900,25,"FACTORYVERSE  /  LAST SHIFT         "+(Rig.Simulator?"XR CONTROLLER SIM":"DESKTOP")+"   /   "+(Mission.ZeroG?"ZERO-G":"GRAVITY ONLINE"),small);Text(44,62,1000,42,Mission.Objective,body);
+ Text(w-210,30,190,30,((int)Mission.SecondsLeft/60)+":"+((int)Mission.SecondsLeft%60).ToString("00")+"  TO DECAY",small);
+ Text(w-210,65,190,30,"O2  "+Mission.Oxygen.ToString("000")+"%",small);Box(new Rect(w-210,98,170*Mission.Oxygen/100,4),Mission.Oxygen<25?Color.red:Color.cyan);
+ Text(w/2-8,h/2-14,30,30,"+",body);
+ if(Rig.Prompt!=""){Box(new Rect(w/2-410,h-146,820,54),new Color(.02f,.07f,.1f,.94f));Text(w/2-395,h-137,800,42,Rig.Prompt,small);Box(new Rect(w/2-410,h-92,820*Rig.Progress,4),Color.cyan);}
+ if(Time.unscaledTime<Mission.MessageUntil){Box(new Rect(30,h-241,w-60,69),new Color(.02f,.08f,.12f,.94f));Text(48,h-232,w-96,62,Mission.Message,body);}
+ Text(30,h-48,w-60,35,Rig.Simulator?"SIM  |  Tab hand  •  MMB + mouse pose  •  Wheel reach  •  RMB grip  •  LMB trigger  •  F2 desktop":"WASD move  •  E grab / fit  •  Hold LMB operate  •  Space / Ctrl thrust  •  X brake  •  C comfort  •  F2 sim",small);
+ if(Mission.Paused||Mission.Terminal){Box(new Rect(0,0,w,h),new Color(.01f,.025f,.05f,.93f));string title=Mission.Paused?"SHIFT PAUSED":Mission.Current==MissionDirector.Phase.Victory?"YOU MADE IT HOME.":"LAST SIGNAL RECEIVED.";Text(100,150,w-150,75,title,big);Text(105,252,w-200,110,Mission.Paused?"Take a breath. The orbital clock is paused.":Mission.Current==MissionDirector.Phase.Victory?"ATLAS recovered. Cargo secured. Escape pod clear.\nTime remaining: "+Mathf.FloorToInt(Mission.SecondsLeft)+"s   |   Oxygen: "+Mathf.FloorToInt(Mission.Oxygen)+"%   |   Errors: "+Mission.Mistakes:Mission.FailureReason,body);if(Mission.Paused&&GUI.Button(new Rect(105,410,250,54),"RESUME")){Mission.Paused=false;Time.timeScale=1;Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}if(GUI.Button(new Rect(105,480,250,54),"RESTART SHIFT  [R]"))Mission.Restart();}
+ }
+}}
